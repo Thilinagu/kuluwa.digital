@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  body {
+    @apply bg-surface-0 text-text-primary dark:bg-surface-dark-0 dark:text-text-dark-primary;
+  }
+  h1, h2, h3, h4 {
+    @apply font-heading tracking-tight;
+  }
+}
+
+.skip-link {
+  @apply absolute left-[-9999px] top-0 z-[200] rounded-br-lg bg-coral px-4 py-3 font-semibold text-ink focus:left-0;
+}
