@@ -14,14 +14,16 @@ export default function StartProjectPage() {
     <>
       <Breadcrumb items={[{ href: "/", label: "Home" }, { label: "Start Your Project" }]} />
       <SectionTight>
-        <Container className="max-w-[820px]">
-          <Eyebrow>Project Enquiry</Eyebrow>
-          <h1 className="font-heading text-[34px] font-bold">Let&apos;s discuss your project.</h1>
-          <p className="mt-3 mb-8 text-text-secondary dark:text-text-dark-secondary">
-            Tell us about your business problem. Our team reviews every enquiry and gets back to you to discuss
-            requirements and next steps.
-          </p>
-          <ProjectEnquiryForm />
+        <Container>
+          <div className="max-w-[820px] mx-auto">
+            <Eyebrow>Project Enquiry</Eyebrow>
+            <h1 className="font-heading text-[34px] font-bold">Let&apos;s discuss your project.</h1>
+            <p className="mt-3 mb-8 text-text-secondary dark:text-text-dark-secondary">
+              Tell us about your business problem. Our team reviews every enquiry and gets back to you to discuss
+              requirements and next steps.
+            </p>
+            <ProjectEnquiryForm />
+          </div>
         </Container>
       </SectionTight>
     </>
