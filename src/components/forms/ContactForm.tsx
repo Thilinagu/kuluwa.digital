@@ -14,27 +14,118 @@ const ENQUIRY_TYPES = [
   "General enquiry",
 ];
 
+// Regex patterns for field validation
+const NAME_REGEX = /^[a-zA-Z\s'-]+$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^\+?[0-9\s\-()]{7,15}$/;
+
+interface ContactFormValues {
+  name: string;
+  email: string;
+  phone: string;
+  enquiryType: string;
+  subject: string;
+  message: string;
+  consent: string;
+}
+
 export function ContactForm() {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
 
+  // Track values to clear field errors on input
+  const [values, setValues] = useState<ContactFormValues>({
+    name: "",
+    email: "",
+    phone: "",
+    enquiryType: "",
+    subject: "",
+    message: "",
+    consent: "false",
+  });
+
+  function updateField(name: string, value: string) {
+    setValues((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => {
+        const copy = { ...prev };
+        delete copy[name];
+        return copy;
+      });
+    }
+  }
+
+  function validateForm(): boolean {
+    const newErrors: Record<string, string> = {};
+
+    // 1. Full Name
+    const name = values.name.trim();
+    if (!name) {
+      newErrors.name = "Full name is required.";
+    } else if (!NAME_REGEX.test(name)) {
+      newErrors.name = "Full name can only contain letters, spaces, hyphens, or apostrophes.";
+    }
+
+    // 2. Email Address
+    const email = values.email.trim();
+    if (!email) {
+      newErrors.email = "Email address is required.";
+    } else if (!EMAIL_REGEX.test(email)) {
+      newErrors.email = "Please enter a valid email address.";
+    }
+
+    // 3. Optional Phone
+    const phone = values.phone.trim();
+    if (phone && !PHONE_REGEX.test(phone)) {
+      newErrors.phone = "Please enter a valid phone number (digits only, 7–15 numbers).";
+    }
+
+    // 4. Enquiry Type
+    if (!values.enquiryType) {
+      newErrors.enquiryType = "Please select an enquiry type.";
+    }
+
+    // 5. Subject
+    if (!values.subject.trim()) {
+      newErrors.subject = "Subject is required.";
+    }
+
+    // 6. Message
+    if (!values.message.trim()) {
+      newErrors.message = "Message is required.";
+    }
+
+    // 7. Consent Checkbox
+    if (values.consent !== "true") {
+      newErrors.consent = "You must consent to be contacted to send a message.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setFormError(null);
-    setErrors({});
+
+    // Run client-side validation
+    if (!validateForm()) {
+      setFormError("Please check the highlighted fields below.");
+      return;
+    }
+
     setSubmitting(true);
 
-    const fd = new FormData(e.currentTarget);
     const payload = {
-      name: String(fd.get("name") || ""),
-      email: String(fd.get("email") || ""),
-      phone: String(fd.get("phone") || ""),
-      enquiryType: String(fd.get("enquiryType") || ""),
-      subject: String(fd.get("subject") || ""),
-      message: String(fd.get("message") || ""),
-      consent: fd.get("consent") === "on",
+      name: values.name.trim(),
+      email: values.email.trim(),
+      phone: values.phone.trim(),
+      enquiryType: values.enquiryType,
+      subject: values.subject.trim(),
+      message: values.message.trim(),
+      consent: values.consent === "true",
     };
 
     try {
@@ -54,6 +145,7 @@ export function ContactForm() {
         setFormError("Please check the highlighted fields below.");
         return;
       }
+
       if (!res.ok) {
         setFormError("Something went wrong sending your message. Please try again, or call us directly.");
         return;
@@ -75,12 +167,24 @@ export function ContactForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <Label htmlFor="name">Full name</Label>
-          <Input id="name" name="name" type="text" required />
+          <Input
+            id="name"
+            name="name"
+            type="text"
+            value={values.name}
+            onChange={(e) => updateField("name", e.target.value)}
+          />
           <ErrorMessage>{errors.name}</ErrorMessage>
         </div>
         <div>
           <Label htmlFor="email">Email address</Label>
-          <Input id="email" name="email" type="email" required />
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            value={values.email}
+            onChange={(e) => updateField("email", e.target.value)}
+          />
           <ErrorMessage>{errors.email}</ErrorMessage>
         </div>
       </div>
@@ -88,16 +192,30 @@ export function ContactForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <Label htmlFor="phone">Phone (optional)</Label>
-          <Input id="phone" name="phone" type="tel" />
+          <Input
+            id="phone"
+            name="phone"
+            type="tel"
+            value={values.phone}
+            onChange={(e) => updateField("phone", e.target.value)}
+          />
+          <ErrorMessage>{errors.phone}</ErrorMessage>
         </div>
         <div>
           <Label htmlFor="enquiryType">Enquiry type</Label>
-          <Select id="enquiryType" name="enquiryType" required defaultValue="">
+          <Select
+            id="enquiryType"
+            name="enquiryType"
+            value={values.enquiryType}
+            onChange={(e) => updateField("enquiryType", e.target.value)}
+          >
             <option value="" disabled>
               Select...
             </option>
             {ENQUIRY_TYPES.map((t) => (
-              <option key={t}>{t}</option>
+              <option key={t} value={t}>
+                {t}
+              </option>
             ))}
           </Select>
           <ErrorMessage>{errors.enquiryType}</ErrorMessage>
@@ -106,21 +224,43 @@ export function ContactForm() {
 
       <div>
         <Label htmlFor="subject">Subject</Label>
-        <Input id="subject" name="subject" type="text" required />
+        <Input
+          id="subject"
+          name="subject"
+          type="text"
+          value={values.subject}
+          onChange={(e) => updateField("subject", e.target.value)}
+        />
         <ErrorMessage>{errors.subject}</ErrorMessage>
       </div>
 
       <div>
         <Label htmlFor="message">Message</Label>
-        <Textarea id="message" name="message" rows={5} required />
+        <Textarea
+          id="message"
+          name="message"
+          rows={5}
+          value={values.message}
+          onChange={(e) => updateField("message", e.target.value)}
+        />
         <ErrorMessage>{errors.message}</ErrorMessage>
       </div>
 
-      <div className="flex items-start gap-2.5">
-        <input type="checkbox" id="consent" name="consent" className="mt-1" required />
-        <label htmlFor="consent" className="text-sm">
-          I consent to be contacted by Kuluwa.digital regarding this enquiry.
-        </label>
+      <div>
+        <div className="flex items-start gap-2.5">
+          <input
+            type="checkbox"
+            id="consent"
+            name="consent"
+            className="mt-1"
+            checked={values.consent === "true"}
+            onChange={(e) => updateField("consent", String(e.target.checked))}
+          />
+          <label htmlFor="consent" className="text-sm">
+            I consent to be contacted by Kuluwa.digital regarding this enquiry.
+          </label>
+        </div>
+        <ErrorMessage>{errors.consent}</ErrorMessage>
       </div>
 
       <Button type="submit" className="w-full" disabled={submitting}>

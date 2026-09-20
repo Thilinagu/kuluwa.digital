@@ -36,6 +36,12 @@ const REQUIRED_BY_STEP: string[][] = [
   ["consentReview", "consentAccurate"],
 ];
 
+// Regex patterns for client-side field validation
+const NAME_REGEX = /^[a-zA-Z\s'-]+$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^\+?[0-9\s\-()]{7,15}$/;
+const URL_REGEX = /^https?:\/\/.+/i;
+
 export function ApplicationForm() {
   const router = useRouter();
   const [step, setStep] = useState(0);
@@ -47,6 +53,14 @@ export function ApplicationForm() {
 
   function update(name: string, value: string) {
     setValues((v) => ({ ...v, [name]: value }));
+    // Clear error for field on change
+    if (errors[name]) {
+      setErrors((prev) => {
+        const copy = { ...prev };
+        delete copy[name];
+        return copy;
+      });
+    }
   }
 
   function toggleRole(role: string) {
@@ -56,9 +70,49 @@ export function ApplicationForm() {
   function validateStep(): boolean {
     const required = REQUIRED_BY_STEP[step] ?? [];
     const newErrors: Record<string, string> = {};
+
+    // 1. Required Field Check
     for (const field of required) {
-      if (!values[field]) newErrors[field] = "This field is required.";
+      if (!values[field] || values[field].trim() === "" || values[field] === "false") {
+        newErrors[field] = "This field is required.";
+      }
     }
+
+    // 2. Specific Field Pattern Validation
+    if (step === 0) {
+      // Name: Letters, spaces, hyphens, and apostrophes only
+      if (values.name && !NAME_REGEX.test(values.name.trim())) {
+        newErrors.name = "Full name can only contain letters, spaces, hyphens, or apostrophes.";
+      }
+
+      // Email format
+      if (values.email && !EMAIL_REGEX.test(values.email.trim())) {
+        newErrors.email = "Please enter a valid email address.";
+      }
+
+      // Phone format
+      if (values.phone && !PHONE_REGEX.test(values.phone.trim())) {
+        newErrors.phone = "Please enter a valid phone number (digits only, 7–15 numbers).";
+      }
+
+      // District: Alphabetic / standard text
+      if (values.district && !NAME_REGEX.test(values.district.trim())) {
+        newErrors.district = "District can only contain letters and spaces.";
+      }
+    }
+
+    if (step === 1) {
+      // Optional LinkedIn URL check
+      if (values.linkedinUrl && values.linkedinUrl.trim() !== "" && !URL_REGEX.test(values.linkedinUrl.trim())) {
+        newErrors.linkedinUrl = "Please enter a valid URL starting with http:// or https://";
+      }
+
+      // Optional Portfolio URL check
+      if (values.portfolioUrl && values.portfolioUrl.trim() !== "" && !URL_REGEX.test(values.portfolioUrl.trim())) {
+        newErrors.portfolioUrl = "Please enter a valid URL starting with http:// or https://";
+      }
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
