@@ -1,16 +1,13 @@
-// Kuluwa.digital — Prisma schema
-// Covers the data the current website actually needs (form submissions).
-// Lead/Partner/Commission models are included as forward-looking architecture
-// for the future partner network platform described in the project brief —
-// clearly separated below — but are not yet wired to any UI.
+// Kuluwa.digital — Prisma schema (Supabase PostgreSQL)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")       // Supabase Pooled Connection (Port 6543)
+  directUrl = env("DIRECT_URL")       // Supabase Direct Connection (Port 5432)
 }
 
 // ------------------------------------------------------------------
@@ -25,18 +22,18 @@ enum SubmissionStatus {
 }
 
 model ContactSubmission {
-  id        String           @id @default(cuid())
-  reference String           @unique
-  name      String
-  email     String
-  phone     String?
+  id          String           @id @default(cuid())
+  reference   String           @unique
+  name        String
+  email       String
+  phone       String?
   enquiryType String
-  subject   String
-  message   String
-  consent   Boolean          @default(false)
-  status    SubmissionStatus @default(NEW)
-  emailedAt DateTime?
-  createdAt DateTime         @default(now())
+  subject     String
+  message     String
+  consent     Boolean          @default(false)
+  status      SubmissionStatus @default(NEW)
+  emailedAt   DateTime?
+  createdAt   DateTime         @default(now())
 }
 
 model ProjectInquiry {
@@ -95,9 +92,7 @@ model Application {
 }
 
 // ------------------------------------------------------------------
-// FUTURE ARCHITECTURE — partner network platform (Section 13/14 of the
-// brief). Modeled now so migrations are additive later; not exposed in
-// any current page or API route.
+// FUTURE ARCHITECTURE — partner network platform
 // ------------------------------------------------------------------
 
 enum LeadStatus {
@@ -118,38 +113,38 @@ enum CommissionStatus {
 }
 
 model Partner {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  phone     String?
-  createdAt DateTime @default(now())
+  id          String       @id @default(cuid())
+  name        String
+  email       String       @unique
+  phone       String?
+  createdAt   DateTime     @default(now())
   leads       Lead[]
   commissions Commission[]
 }
 
 model Lead {
-  id          String     @id @default(cuid())
-  reference   String     @unique
+  id          String       @id @default(cuid())
+  reference   String       @unique
   partnerId   String?
-  partner     Partner?   @relation(fields: [partnerId], references: [id])
+  partner     Partner?     @relation(fields: [partnerId], references: [id])
   clientName  String
   clientEmail String?
   clientPhone String?
   description String
-  status      LeadStatus @default(SUBMITTED)
+  status      LeadStatus   @default(SUBMITTED)
   projectId   String?
-  createdAt   DateTime   @default(now())
+  createdAt   DateTime     @default(now())
   commissions Commission[]
 }
 
 model Commission {
-  id        String            @id @default(cuid())
+  id        String           @id @default(cuid())
   partnerId String
-  partner   Partner           @relation(fields: [partnerId], references: [id])
+  partner   Partner          @relation(fields: [partnerId], references: [id])
   leadId    String
-  lead      Lead              @relation(fields: [leadId], references: [id])
-  amount    Decimal?          @db.Decimal(12, 2)
-  status    CommissionStatus  @default(PENDING)
+  lead      Lead             @relation(fields: [leadId], references: [id])
+  amount    Decimal?         @db.Decimal(12, 2)
+  status    CommissionStatus @default(PENDING)
   paidAt    DateTime?
-  createdAt DateTime          @default(now())
+  createdAt DateTime         @default(now())
 }

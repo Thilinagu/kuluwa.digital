@@ -16,12 +16,10 @@ export type PortfolioProject = {
   link: string;
   title: string;
   category: string;
-  subCategory: string;
   tags: string[];
   summary: string;
   isConcept: boolean;
   imagePath: string;
-  industry: string;
   services: string[];
   ongoing: boolean;
 };
