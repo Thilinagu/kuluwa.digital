@@ -19,10 +19,10 @@ export default function PortfolioPage() {
       <SectionTight>
         <Container>
           <Eyebrow>Portfolio</Eyebrow>
-          <h1 className="max-w-[640px] font-heading text-4xl font-bold">What we've built for clients. What we're exploring next.</h1>
+          <h1 className="max-w-[640px] font-heading text-4xl font-bold">What we&apos;ve built for clients. What we&apos;re exploring next.</h1>
           <NoticeBanner>
-            A working record of technology solutions we've delivered for real businesses,
-            alongside concepts we've built to test ideas, sharpen our craft, and explore where
+            A working record of technology solutions we&apos;ve delivered for real businesses,
+            alongside concepts we&apos;ve built to test ideas, sharpen our craft, and explore where
             things are heading. Every project is labelled clearly, so you always know which is
             which.
           </NoticeBanner>
