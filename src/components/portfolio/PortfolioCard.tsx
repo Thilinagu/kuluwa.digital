@@ -39,22 +39,11 @@ export function PortfolioCard({ project }: { project: PortfolioProject }) {
                 Ongoing
               </span>
             )}
-            {project.subCategory && (
-              <span className="inline-block rounded-md bg-surface-2 px-2 py-0.5 text-xs font-medium text-text-secondary dark:bg-surface-dark-2 dark:text-text-dark-secondary">
-                {project.subCategory}
-              </span>
-            )}
           </div>
 
           <h3 className="mb-2 mt-3 font-heading text-lg font-semibold">{project.title}</h3>
 
-          {project.industry && (
-            <p className="mb-1 text-xs font-medium uppercase tracking-wider text-coral">
-              {project.industry}
-            </p>
-          )}
-
-          <p className="text-sm text-justify text-text-secondary dark:text-text-dark-secondary">
+          <p className="text-sm text-text-secondary dark:text-text-dark-secondary">
             {project.summary}
           </p>
 
