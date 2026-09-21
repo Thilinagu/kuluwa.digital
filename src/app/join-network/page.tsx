@@ -81,12 +81,6 @@ export default function JoinNetworkPage() {
         <Container>
           <h2 className="mb-6 text-2xl font-semibold">How our business development opportunities work</h2>
           <ProcessList steps={HOW_IT_WORKS} />
-          <NoticeBanner>
-            We run this the straightforward way: a genuine lead, reviewed fairly, with commission terms confirmed
-            in writing before you get started — so you always know exactly where you stand. No fees, no
-            multi-level structures, just a clear, direct relationship between the work you bring in and what you
-            earn from it.
-          </NoticeBanner>
         </Container>
       </SectionTight>
 

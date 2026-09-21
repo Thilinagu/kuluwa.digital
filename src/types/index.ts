@@ -13,16 +13,17 @@ export type ServiceContent = {
 
 export type PortfolioProject = {
   slug: string;
+  link: string;
   title: string;
   category: string;
+  subCategory: string;
   tags: string[];
   summary: string;
-  challenge: string;
-  solution: string;
-  features: string[];
-  tech: string[];
-  isConcept: boolean; // true = illustrative concept, not completed client work
-  relatedServiceSlug: string;
+  isConcept: boolean;
+  imagePath: string;
+  industry: string;
+  services: string[];
+  ongoing: boolean;
 };
 
 export type OpportunityStatus = "open" | "limited" | "closed" | "soon";

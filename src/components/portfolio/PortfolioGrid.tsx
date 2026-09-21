@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import type { PortfolioProject } from "@/types";
 import { PortfolioCard } from "./PortfolioCard";
 
 export function PortfolioGrid({ projects }: { projects: PortfolioProject[] }) {
-  const categories = useMemo(() => ["All", ...Array.from(new Set(projects.map((p) => p.category)))], [projects]);
+  const categories = ["All", "Projects", "Concepts"];
   const [active, setActive] = useState("All");
   const visible = active === "All" ? projects : projects.filter((p) => p.category === active);
 
