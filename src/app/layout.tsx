@@ -5,6 +5,7 @@ import "./globals.css";
 import { Header } from "@/components/navigation/Header";
 import { Footer } from "@/components/footer/Footer";
 import { SITE } from "@/config/site";
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 // Using Sora as the display/heading font. The original brand doc specifies
 // "General Sans" — swap this for General Sans (via next/font/local, once
@@ -43,6 +44,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
   return (
     <html lang="en" className={`${sora.variable} ${inter.variable} ${mono.variable}`}>
@@ -88,6 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <Header />
         <main id="main">{children}</main>
+        {gaId && <GoogleAnalytics gaId={gaId} />}
         <Footer />
       </body>
     </html>

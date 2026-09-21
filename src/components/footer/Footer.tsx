@@ -78,9 +78,12 @@ export function Footer() {
           </span>
           <span className="flex gap-4">
             {FOOTER_LEGAL_LINKS.map((l) => (
-              <Link key={l.href} href={l.href} className="hover:text-white">
+              // <Link key={l.href} href={l.href} className="hover:text-white">
+              //   {l.label}
+              // </Link>
+              <span key={l.href} className="text-gray-400 cursor-not-allowed">
                 {l.label}
-              </Link>
+              </span>
             ))}
           </span>
         </div>

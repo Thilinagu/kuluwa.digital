@@ -19,11 +19,12 @@ export default function PortfolioPage() {
       <SectionTight>
         <Container>
           <Eyebrow>Portfolio</Eyebrow>
-          <h1 className="max-w-[640px] font-heading text-4xl font-bold">Project concepts illustrating our development capability.</h1>
+          <h1 className="max-w-[640px] font-heading text-4xl font-bold">What we've built for clients. What we're exploring next.</h1>
           <NoticeBanner>
-            The concepts below showcase the kind of solutions our team can deliver, and give you a feel for our
-            design and development approach. Completed client projects will be added here as they&apos;re
-            delivered and cleared for public sharing.
+            A working record of technology solutions we've delivered for real businesses,
+            alongside concepts we've built to test ideas, sharpen our craft, and explore where
+            things are heading. Every project is labelled clearly, so you always know which is
+            which.
           </NoticeBanner>
           <PortfolioGrid projects={PORTFOLIO} />
         </Container>

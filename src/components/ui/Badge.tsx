@@ -28,7 +28,15 @@ export function StatusBadge({ status }: { status: OpportunityStatus }) {
 export function ConceptBadge() {
   return (
     <span className="inline-block bg-coral/10 font-mono text-[11.5px] tracking-[.02em] text-coral-deep">
-      Concept Project
+      Concept
+    </span>
+  );
+}
+
+export function ProjectBadge() {
+  return (
+    <span className="inline-block bg-coral/10 font-mono text-[11.5px] tracking-[.02em] text-coral-deep">
+      Project
     </span>
   );
 }

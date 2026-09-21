@@ -46,8 +46,8 @@ export default function HomePage() {
           <div className="flex flex-wrap overflow-hidden rounded-lg border border-border dark:border-border-dark">
             {[
               ["10+ yrs", "Combined experience of the Kuluwa development team"],
-              ["100k+", "Skilled professionals across Sri Lanka's established ICT/BPM sector*"],
-              ["Top 5", "Sri Lanka's tech sector ranks among the country's top export industries*"],
+              ["8", "Core technology disciplines under one team"],
+              ["24/7", "Continuity across time zones for our clients"],
               ["🇱🇰🇦🇺", "Working-day overlap with Australian business hours"],
             ].map(([num, label]) => (
               <div key={label} className="min-w-[200px] flex-1 border-r border-border p-[26px_24px] last:border-r-0 dark:border-border-dark">
@@ -56,10 +56,6 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-          <p className="mt-2.5 text-xs text-text-secondary dark:text-text-dark-secondary">
-            *Sri Lanka ICT/BPM industry context, per SLASSCOM and Sri Lanka Board of Investment reporting —
-            reflects the national sector, not a claim about Kuluwa.digital&apos;s own size.
-          </p>
         </Container>
       </SectionTight>
 
@@ -107,7 +103,7 @@ export default function HomePage() {
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
               <Eyebrow>Portfolio</Eyebrow>
-              <h2 className="font-heading text-[30px] font-semibold">Recent project concepts.</h2>
+              <h2 className="font-heading text-[30px] font-semibold">Recent Projects.</h2>
             </div>
             <a href="/portfolio" className="font-semibold text-text-primary hover:text-coral dark:text-text-dark-primary">
               View all projects →
