@@ -7,10 +7,6 @@ import { Footer } from "@/components/footer/Footer";
 import { SITE } from "@/config/site";
 import { GoogleAnalytics } from '@next/third-parties/google';
 
-// Using Sora as the display/heading font. The original brand doc specifies
-// "General Sans" — swap this for General Sans (via next/font/local, once
-// licensed and self-hosted) before final production launch if you want an
-// exact match; Sora is a close geometric-sans placeholder in the meantime.
 const sora = Sora({ subsets: ["latin"], variable: "--font-heading", weight: ["400", "500", "600", "700"] });
 const inter = Inter({ subsets: ["latin"], variable: "--font-body" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", weight: ["400", "500"] });
@@ -26,11 +22,20 @@ export const metadata: Metadata = {
     description: SITE.defaultDescription,
     locale: SITE.locale,
     url: SITE.url,
+    images: [
+      {
+        url: "/opengraph-image", // Points to your app/opengraph-image.tsx file automatically
+        width: 1200,
+        height: 630,
+        alt: SITE.defaultTitle,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE.defaultTitle,
     description: SITE.defaultDescription,
+    images: ["/opengraph-image"],
   },
   robots: { index: true, follow: true },
   verification: {
@@ -59,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               name: "Kuluwa.digital",
               legalName: "Kuluwa Pvt Ltd",
               url: SITE.url,
+              image: `${SITE.url}/opengraph-image`,
               areaServed: [{ "@type": "Country", name: "Sri Lanka" }, { "@type": "Country", name: "Australia" }],
               contactPoint: { "@type": "ContactPoint", telephone: "+94-72-680-7177", contactType: "customer service" },
             }),
