@@ -28,3 +28,8 @@
 .skip-link {
   @apply absolute left-[-9999px] top-0 z-[200] rounded-br-lg bg-coral px-4 py-3 font-semibold text-ink focus:left-0;
 }
+
+/* Hide Netlify badge */
+#netlify-badge {
+  display: none !important;
+}
